@@ -1,28 +1,114 @@
-# Angular specific
-/dist/
-/out-tsc/
-/tmp/
-/coverage/
-/e2e/test-output/
-/.angular/
-.angular/
+# dotenv environment variable files
+**/.env
+**/.env.development.local
+**/.env.test.local
+**/.env.production.local
+**/.env.local
+**/certs
 
-# Node modules and dependency files
-/node_modules/
-/package-lock.json
-/yarn.lock
+# Compiled output
+**/dist
+**/tmp
+**/out-tsc
+**/bazel-out
+**/*.lock
 
-# Environment files
-/.env
+# Node
+**/node_modules
+**/npm-debug.log
+**/yarn-error.log
 
-# Angular CLI and build artefacts
-/.angular-cli.json
-/.ng/
+# Miscellaneous
+**/.angular/cache
+**/.sass-cache/
+**/connect.lock
+**/coverage
+**/libpeerconnection.log
+**/testem.log
+**/typings
 
-# TypeScript cache
-*.tsbuildinfo
+# System files
+**/.DS_Store
+**/Thumbs.db
 
-# Logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# code coverage
+**/coverage
+**/*.lcov
+
+# logs
+**/logs
+**/_.log
+**/report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
+
+# output
+**/out
+**/dist
+**/*.tgz
+
+**/HELP.md
+**/target/
+**/.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# IDEs and editors
+**/.idea/
+**/.project
+**/.classpath
+**/.c9/
+**/*.launch
+**/.settings/
+**/*.sublime-workspace
+
+### STS ###
+**/.apt_generated
+**/.classpath
+**/.factorypath
+**/.project
+**/.settings
+**/.springBeans
+**/.sts4-cache
+
+### IntelliJ IDEA ###
+**/.idea
+**/*.iws
+**/*.iml
+**/*.ipr
+
+### NetBeans ###
+**/nbproject/private/
+**/nbbuild/
+**/dist/
+**/nbdist/
+**/.nb-gradle/
+**/build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+**/.vscode/
+**/.vscode/*
+**/.vs
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# Finder (MacOS) folder config
+**/.DS_Store
+
+# caches
+**/.eslintcache
+**/.cache
+**/*.tsbuildinfo
+**/cargo.lock
+**/package-lock.json
+*.lock
+**/.class
+*.class
+**/pom.properties
+**/maven-wrapper.properties
+
+**bin
+**/bin

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Game</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"/>
+    <style>
+        body {
+            padding: 2em;
+        }
+        .view {
+            display: none;
+        }
+        #summary-table table {
+            width: 100%;
+        }
+        #choices-container button {
+            width: 100%;
+            margin-bottom: 1rem;
+            text-align: left;
+            height: auto;
+            white-space: normal;
+        }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <header>
+            <h1>Quiz Game</h1>
+            <p>Teste seu conhecimento!</p>
+        </header>
+
+        <section id="start-view" class="view" style="display: block;">
+            <h2>Iniciar Novo Jogo</h2>
+            <form id="start-form">
+                <label for="name">Nome</label>
+                <input type="text" id="name" name="name" placeholder="Seu Nome" required>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="seu@email.com" required>
+                <button type="submit">Iniciar Jogo</button>
+            </form>
+            <hr>
+            <button id="show-profile-lookup-btn" class="secondary">Ver Pontuações</button>
+        </section>
+
+        <section id="profile-lookup-view" class="view">
+            <h2>Verificar Pontuação</h2>
+            <form id="profile-lookup-form">
+                <label for="profile-email">Digite seu Email</label>
+                <input type="email" id="profile-email" name="email" placeholder="seu@email.com" required>
+                <button type="submit">Procurar</button>
+            </form>
+            <button id="back-to-start-from-lookup-btn" class="secondary outline">Voltar</button>
+        </section>
+
+        <section id="profile-view" class="view">
+            <h2 id="profile-name"></h2>
+            <p>Sua melhor pontuação é:</p>
+            <h1 id="profile-best-score"></h1>
+            <button id="back-to-start-from-profile-btn" class="secondary">Voltar ao Início</button>
+        </section>
+
+        <section id="choice-view" class="view">
+            <h2>Escolha sua próxima questão:</h2>
+            <div id="choices-container">
+            </div>
+        </section>
+
+        <section id="question-view" class="view">
+            <hgroup>
+                <h3 id="question-text"></h3>
+                <p>Questão <span id="question-number"></span> de 10 | Pontuação: <span id="current-score">0</span></p>
+            </hgroup>
+            <form id="answer-form">
+                <div id="options-container"></div>
+                <button type="submit">Enviar Resposta</button>
+            </form>
+        </section>
+
+        <section id="feedback-view" class="view">
+            <h2 id="feedback-title"></h2>
+            <p id="feedback-explanation"></p>
+            <button id="next-question-btn">Próxima Questão</button>
+            <button id="show-summary-btn" style="display:none;">Ver Resumo</button>
+        </section>
+
+        <section id="summary-view" class="view">
+            <h2>Fim de Jogo!</h2>
+            <h3 id="final-score"></h3>
+            <div id="summary-table"></div>
+            <button id="play-again-btn">Jogar Novamente</button>
+        </section>
+
+        <div id="loading-indicator" class="view">
+            <p aria-busy="true">Carregando, por favor aguarde...</p>
+        </div>
+         <div id="error-message" class="view" style="color: red;"></div>
+
+    </main>
+
+    <script src="api.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

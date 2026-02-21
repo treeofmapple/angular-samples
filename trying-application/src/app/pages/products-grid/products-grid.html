@@ -1,0 +1,47 @@
+<mat-sidenav-container class="h-[calc(100vh-64px)] min-h-full">
+  <mat-sidenav mode="side" opened="true" class="w-64 border-r">
+    <div class="p-6">
+      <h2 class="text-lg font-bold text-gray-900 mb-4">Categories</h2>
+      <mat-nav-list>
+        @for(cat of store.availableCategories(); track cat) {
+        <mat-list-item
+          class="my-2"
+          [activated]="cat === category()"
+          [routerLink]="['/products', cat]"
+        >
+          <span
+            matListItemTitle
+            class="font-medium capitalize"
+            [class]="cat === category() ? '!text-white': null "
+            >{{ cat }}</span
+          >
+        </mat-list-item>
+        }
+      </mat-nav-list>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="bg-gray-100 p-6 h-full">
+    <h1 class="text-2xl font-bold text-gray-900 mb-4 capitalize">{{ category() }}</h1>
+    <p class="text-base text-gray-600 mb-6">{{ store.filteredProducts().length }} products found.</p>
+    <div class="responsive-grid">
+      @for(product of store.filteredProducts(); track product.id){
+      <app-product-card [product]="product" (addToCartClicked)="addToCart($event)" />
+      }
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+<!--
+
+<div class="bg-gray-100 p-6 h-full">
+  <h1 class="text-2xl font-bold text-gray-900 mb-6 capitalize">{{ category() }}</h1>
+
+  <div class="responsive-grid">
+    @for(product of filteredProducts(); track product.id){
+    <app-product-card [product]="product" (addToCartClicked)="addToCart($event)" />
+    }
+  </div>
+</div>
+
+-->
