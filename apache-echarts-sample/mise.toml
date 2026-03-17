@@ -1,0 +1,7 @@
+[tools]
+node = "22"
+rust = "stable-x86_64-pc-windows-gnu"
+
+[tasks.backend_run]
+dir = "data_gen"
+run = "cargo run"
