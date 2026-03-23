@@ -1,7 +1,13 @@
 [tools]
 node = "22"
-rust = "stable-x86_64-pc-windows-gnu"
+rust = "1.91"
 
 [tasks.backend_run]
 dir = "data_gen"
 run = "cargo run"
+
+[tasks.frotend_run]
+run = "bun run start"
+
+[tasks.download]
+run = "bun install"
