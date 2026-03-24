@@ -8,36 +8,20 @@ export const routes: Routes = [
     redirectTo: 'home',
   },
   {
+    path: 'home',
+    loadComponent: () => import('./pages/home/home').then((m) => m.Home),
+  },
+  {
+    path: 'chart',
+    loadComponent: () => import('./pages/chart/chart').then((m) => m.Chart),
+  },
+  {
     path: 'error',
-    children: [
-      {
-        path: '401',
-        loadComponent: () =>
-          import('./pages/errors/nonauthorized/nonauthorized').then((m) => m.default),
-        data: { hideLayout: true },
-      },
-      {
-        path: '404',
-        loadComponent: () => import('./pages/errors/not-found/not-found').then((m) => m.default),
-        data: { hideLayout: true },
-      },
-      {
-        path: '429',
-        loadComponent: () =>
-          import('./pages/errors/too-much-requests/much-requests').then((m) => m.default),
-        data: { hideLayout: true },
-      },
-      {
-        path: '500',
-        loadComponent: () =>
-          import('./pages/errors/internal-server/internal-server').then((m) => m.default),
-        data: { hideLayout: true },
-      },
-    ],
+    loadChildren: () => import('./pages/errors/errors.routes').then((m) => m.errorRoutes),
   },
   {
     path: '**',
     canActivate: [redirectNearMatch],
-    loadComponent: () => import('./pages/errors/not-found/not-found').then((m) => m.default),
+    redirectTo: 'error/404',
   },
 ];

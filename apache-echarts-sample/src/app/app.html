@@ -1,1 +1,14 @@
 <router-outlet />
+@if (showLayout()) {
+<app-header />
+}
+
+<main [class.min-h-screen]="!showLayout()" [class.min-h-calc]="showLayout()" class="flex flex-col">
+  <div class="flex-grow overflow-auto">
+    <router-outlet />
+  </div>
+
+  @if (showLayout()) {
+  <app-footer />
+  }
+</main>

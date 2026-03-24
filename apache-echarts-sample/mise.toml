@@ -2,12 +2,12 @@
 node = "22"
 rust = "1.91"
 
-[tasks.backend_run]
+[tasks.rust_run]
 dir = "data_gen"
 run = "cargo run"
 
-[tasks.frotend_run]
+[tasks.run]
 run = "bun run start"
 
-[tasks.download]
+[tasks.install]
 run = "bun install"

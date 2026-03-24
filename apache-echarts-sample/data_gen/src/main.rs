@@ -9,6 +9,8 @@ struct Pagination {
   limit: u32,
 }
 
+// adapt the code to send the determinated data
+
 async fn get_chart_data (Query(pagination): Query<Pagination>) -> Json<Vec<[f64; 2]>> {
   let df = LazyCsvReader::new("spotify_songs.csv")
     .finish()

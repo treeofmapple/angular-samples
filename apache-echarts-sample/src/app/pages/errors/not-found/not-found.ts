@@ -1,6 +1,5 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { LocaleStore } from '../../../../assets/locale/locale.store';
 
 @Component({
   selector: 'error-not-found',
@@ -9,5 +8,4 @@ import { LocaleStore } from '../../../../assets/locale/locale.store';
   styleUrl: './not-found.scss',
 })
 export default class NotFound {
-  readonly locale = inject(LocaleStore);
 }
