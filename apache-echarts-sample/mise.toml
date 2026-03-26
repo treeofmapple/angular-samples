@@ -1,25 +1,58 @@
 [tools]
+# rust = "1.91"
+# gcc = "13"
 node = "22"
-rust = "1.91"
 
-[tasks.rust_add]
-dir = "data_gen"
-run = "cargo add"
+# [tasks.rust_add]
+# dir = "data_gen"
+# run = "cargo add"
 
-[tasks.rust_clean]
-dir = "data_gen"
-run = "cargo clean"
+# [tasks.rust_clean]
+# dir = "data_gen"
+# run = "cargo clean"
 
-[tasks.rust_build]
-dir = "data_gen"
-run = "cargo build"
+# [tasks.rust_build]
+# dir = "data_gen"
+# run = "cargo build"
 
-[tasks.rust_run]
-dir = "data_gen"
-run = "cargo run"
+# [tasks.rust_run]
+# dir = "data_gen"
+# run = "cargo run"
 
-[tasks.run]
+[tasks.setup]
+hide = true
+dir = "macrw"
+run = """
+if [ ! -d "build" ]; then
+  echo "Build directory not found. Initializing..."
+  cmake -B build -S .
+  else
+    echo "Build directory already exists."
+    cmake -B build -S .
+fi
+"""
+
+[tasks.build]
+description = "Compile the project"
+dir = "macrw"
+depends = ["setup"]
+run = "cmake --build build -j$(nproc)"
+
+[tasks.b_run]
+description = "Build and Execute the binary"
+dir = "macrw/build"
+depends = ["build"]
+run = "./macrw"
+
+[tasks._run]
+description = "Execute the binary"
+dir = "macrw/build"
+run = "./macrw"
+
+[tasks.w_run]
+description = "Run Web App"
 run = "bun run start"
 
-[tasks.install]
+[tasks.w_install]
+description = "Install Web App Libraries"
 run = "bun install"
