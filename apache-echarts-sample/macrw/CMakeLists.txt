@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10)
 project (macrw)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -12,14 +12,20 @@ FetchContent_Declare(
     GIT_REPOSITORY https://github.com/drogonframework/drogon
     GIT_TAG v1.9.0
 )
-FetchContent_MakeAvailable(Drogon)
+FetchContent_GetProperties(Drogon)
+if(NOT drogon_POPULATED)
+    FetchContent_Populate(Drogon)
+endif()
 
 FetchContent_Declare(
   DataFrame
   GIT_REPOSITORY https://github.com/hosseinmoein/DataFrame.git
   GIT_TAG 2.1.0
 )
-FetchContent_MakeAvailable(DataFrame)
+FetchContent_GetProperties(DataFrame)
+if(NOT dataframe_POPULATED)
+    FetchContent_Populate(DataFrame)
+endif()
 
 add_compile_options(-fcoroutines)
 find_package(Threads REQUIRED)
