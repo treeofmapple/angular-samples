@@ -1,2 +1,2 @@
-pub mod music_data;
+pub mod music;
 pub mod pagination;

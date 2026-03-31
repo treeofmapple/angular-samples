@@ -2,7 +2,7 @@ use axum::{Json, extract::Query};
 use minmaxlttb::{Binning, Point, lttb};
 use polars::prelude::{LazyCsvReader, LazyFileListReader, col};
 
-use crate::structs::pagination::Pagination;
+use crate::models::pagination::Pagination;
 
 pub async fn get_chart_data(Query(pagination): Query<Pagination>) -> Json<Vec<[f64; 2]>> {
   let df = LazyCsvReader::new("spotify_songs.csv")
