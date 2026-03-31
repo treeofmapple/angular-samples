@@ -22,15 +22,7 @@ node = "22"
 [tasks.setup]
 hide = true
 dir = "macrw"
-run = """
-if [ ! -d "build" ]; then
-  echo "Build directory not found. Initializing..."
-  cmake -B build -S .
-  else
-    echo "Build directory already exists."
-    cmake -B build -S .
-fi
-"""
+run = "cmake -B build -S ."
 
 [tasks.build]
 description = "Compile the project"
