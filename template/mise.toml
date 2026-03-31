@@ -1,0 +1,10 @@
+[tools]
+node = "22"
+
+[tasks.run]
+description = "Run Web App"
+run = "bun run start"
+
+[tasks.install]
+description = "Install Web App Libraries"
+run = "bun install"

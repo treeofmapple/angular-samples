@@ -9,12 +9,7 @@ import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from 
 import { routes } from './app.routes';
 import { provideStore } from '@ngrx/store';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
-import {
-  provideHttpClient,
-  withFetch,
-  withInterceptors,
-  withInterceptorsFromDi,
-} from '@angular/common/http';
+import { provideHttpClient, withFetch, withInterceptorsFromDi } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
   providers: [

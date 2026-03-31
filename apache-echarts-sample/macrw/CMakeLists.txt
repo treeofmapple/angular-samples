@@ -27,4 +27,5 @@ find_package(Threads REQUIRED)
 add_executable(macrw src/main.cpp)
 
 target_include_directories(macrw PRIVATE ${dataframe_SOURCE_DIR}/include)
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
 target_link_libraries(macrw PRIVATE drogon DataFrame Threads::Threads)

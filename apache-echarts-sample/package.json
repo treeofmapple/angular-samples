@@ -10,18 +10,6 @@
     "inter": "ng serve --host 0.0.0.0",
     "serve:ssr:apache-echarts-sample": "node dist/apache-echarts-sample/server/server.mjs"
   },
-  "prettier": {
-    "printWidth": 100,
-    "singleQuote": true,
-    "overrides": [
-      {
-        "files": "*.html",
-        "options": {
-          "parser": "angular"
-        }
-      }
-    ]
-  },
   "private": true,
   "packageManager": "npm@10.9.4",
   "dependencies": {

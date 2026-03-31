@@ -1,45 +1,52 @@
 #include <DataFrame/DataFrame.h>
-#include <DataFrame/DataFrameMLHelpers.h>
-#include <drogon/drogon.h>
-#include <drogon/HttpController.h>
-#include <vector>
+#include <DataFrame/DataFrameStatsVisitors.h>
+#include <DataFrame/Utils/DateTime.h>
+#include <algorithm>
 #include <cstdint>
-#include <string.h>
+#include <drogon/HttpController.h>
+#include <drogon/drogon.h>
+#include <string>
 
 using namespace drogon;
 using namespace hmdf;
 
-struct Pagination {
-  size_t offset;
-  size_t limit;
-};
-
 class DataChart : public HttpController<DataChart> {
-    StdDataFrame<uint64_t> global_df;
+  StdDataFrame<uint64_t> global_df;
+
 public:
   METHOD_LIST_BEGIN
-  ADD_METHOD_TO(DataChart::get_chart_data,
-                "/chart_data?offset={offset}&limit={limit}", Get);
+  ADD_METHOD_TO(DataChart::get_chart_data, "/chart", Get);
   METHOD_LIST_END
 
   void get_chart_data(const HttpRequestPtr &req,
-                      std::function<void(const HttpRequestPtr &)> &&callback) {
+                      std::function<void(const HttpResponsePtr &)> &&callback) {
 
+    /* Data Size */
     auto &offset_str = req->getParameter("offset");
     auto &limit_str = req->getParameter("limit");
 
-    size_t offset = std::stoul(offset_str.empty() ? "0" : offset_str);
-    size_t limit = std::stoul(limit_str.empty() ? "100" : limit_str);
+    Pagination page;
+    page.offset = std::stoul(offset_str.empty() ? "0" : offset_str);
+    page.limit = std::stoul(limit_str.empty() ? "100" : limit_str);
 
     try {
 
-      global_df.read_csv<int, double, std::string>("spotify_songs.csv");
+      if (global_df.empty()) {
+        global_df.read("spotify_songs.csv", io_format::csv2);
+      }
 
-      auto sliced_df = global_df.get_view(std::IndexView<uint64_t>{offset, offset + limit});
+      const auto &full_index = global_df.get_index();
+
+      size_t end_idx = std::min(page.offset + page.limit, full_index.size());
+      std::vector<uint64_t> view_index(full_index.begin() + page.offset,
+                                       full_index.begin() + end_idx);
+
+      auto sliced_df = global_df.get_view_by_idx(view_index);
 
       const auto &pop = sliced_df.get_column<int>("track_popularity");
       const auto &genre = sliced_df.get_column<std::string>("playlist_genre");
-      const auto &subgenre = sliced_df.get_column<std::string>("playlist_subgenre");
+      const auto &subgenre =
+          sliced_df.get_column<std::string>("playlist_subgenre");
       const auto &key = sliced_df.get_column<int>("key");
       const auto &loud = sliced_df.get_column<double>("loudness");
       const auto &acoustic = sliced_df.get_column<double>("acousticness");
@@ -58,10 +65,22 @@ public:
         item["duration_ms"] = dur[i];
         json_res.append(item);
       }
+      Json::Value data_array(Json::objectValue);
 
-      auto resp = HttpResponse::newHttpJsonResponse(json_res);
+      data_array["data"] = json_res;
+      Json::Value meta;
+      meta["offset"] = (Json::UInt64)page.offset;
+      meta["limit"] = (Json::UInt64)page.limit;
+      meta["total"] = (Json::UInt64)full_index.size();
+      meta["has_more"] = (page.offset + page.limit) < full_index.size();
+
+      data_array["meta"] = meta;
+
+      auto resp = HttpResponse::newHttpJsonResponse(data_array);
       callback(resp);
+
     } catch (const std::exception &e) {
+
       auto resp = HttpResponse::newHttpResponse();
       resp->setStatusCode(drogon::k500InternalServerError);
       resp->setBody(std::string("Error processing data: ") + e.what());
