@@ -1,19 +1,20 @@
-#pragma once
-#include <drogon/HttpController.h>
+#ifndef MUSICDATA_H
+#define MUSICDATA_H
 
-using namespace drogon;
+#include <algorithm>
+#include <optional>
+#include <string>
 
-class Music : public drogon::HttpController<Music> {
-public:
-  METHOD_LIST_BEGIN
-  METHOD_ADD(Music::getOne, "/{id}", Get);
-  METHOD_ADD(Music::create, "/", Post);
-  METHOD_ADD(Music::update, "/{id}", Put);
-  METHOD_ADD(Music::deleteOne, "/{id}", Delete);
-  METHOD_LIST_END
+struct MusicData {
+  std::optional<std::string> track_popularity;
+  std::optional<std::string> playlist_genre;
+  std::optional<std::string> playlist_subgenre;
+  std::optional<std::string> key;
+  std::optional<std::string> loudness;
+  std::optional<std::string> acousticness;
+  std::optional<std::string> duration_ms;
 
-  void getOne(const HttpRequestPtr &req,
-              std::function<void(const HttpResponsePtr &)> &&callback, int id);
-  void fetchList(const HttpRequestPtr &req,
-                 std::function<void(const HttpResponsePtr &)> &&callback);
+  MusicData() {}
 };
+
+#endif
