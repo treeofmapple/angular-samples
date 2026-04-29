@@ -1,32 +1,31 @@
 use axum::{Json, extract::Query};
+use log::{error, info};
 use minmaxlttb::{Binning, Point, lttb};
 use polars::prelude::{LazyCsvReader, LazyFileListReader, col};
 
 use crate::models::pagination::Pagination;
 
 pub async fn get_chart_data(Query(pagination): Query<Pagination>) -> Json<Vec<[f64; 2]>> {
-  let df = LazyCsvReader::new("spotify_songs.csv")
-    .finish()
-    .unwrap()
-    .slice(pagination.offset, pagination.limit)
-    .select([col("track_popularity"), col("playlist_genre"), col("playlist_subgenre"), col("key"), col("loudness"), col("accousticness"), col("duration_ms")])
-    .collect()
-    .unwrap();
+    // Load your dataset
+    let file_path = "/path/to/your/dataset.csv";
+    let df = CsvReader::from_file(file_path)?
+        .infer_schema(None)
+        .has_header(true)
+        .finish()
+        .expect("Error reading CSV");
 
-  let response:
+    // Sort the DataFrame by 'tempo' in ascending order
+    let sorted_df = df.sort(["tempo"], false, true).expect("Error sorting DataFrame");
 
-  let raw_points: Vec<Point> = tempo_col
-    .into_iter()
-    .zip(energy_col.into_iter())
-    .filter_map(|(x, y)| Some(Point::new(x?, y?)))
-    .collect();
+    let mut points: Vec<Point> = vec![];
 
-  let downsampled = lttb(&raw_points, 1000, Binning::ByCount).unwrap();
+    for row in sorted_df.iter_rows() {
+        if let [Ok(tempo), Ok(popularity)] = [&row[9], &row[5]] { // 9 is 'tempo', 5 is 'popularity'
+            points.push(Point::new(*tempo as f64, *popularity as f64));
+        }
+    }
 
-  let response: Vec<[f64; 2]> = downsampled
-    .into_iter()
-    .map(|p| [p.x(), p.y()])
-    .collect();
+    let downsampled_points = lttb(&points, 100).expect("Error during downsampling");
 
-  Json(response)
+    Json(downsampled_points)
 }

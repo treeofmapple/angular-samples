@@ -1,7 +1,23 @@
+use std::net::SocketAddr;
+
+use axum::serve;
+use gauss::config::routes::define_access_routes;
+use tokio::{net::TcpListener, signal};
+
 #[tokio::main]
-async fn main() {
-  let app = Router::new().route("/data", get(get_chart_data));
-  let listener = tokio::net::TcpListener::bind("127.0.0.1:3000").await.unwrap();
-  println!("Listening on http://127.0.0.1:3000/data?offset=0&limit=5000");
-  axum::serve(listener, app).await.unwrap();
+async fn main() -> anyhow::Result<()> {
+    let define_routes = define_access_routes().await;
+
+    let addr = SocketAddr::from(([127, 0, 0, 1], 8000));
+    println!("Servidor rodando em http://{}", addr);
+
+    let listener = TcpListener::bind(addr).await?;
+
+    serve(listener, define_routes)
+        .with_graceful_shutdown(async {
+            signal::ctrl_c().await.expect("Failed to listen for Ctrl+c");
+            println!("\nEncerrando Servidor...");
+        })
+        .await?;
+    Ok(())
 }
